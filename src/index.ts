@@ -14,7 +14,7 @@ export default {
 				const userInput = url.searchParams.get('prompt') || 'Once upon a time, there was a little llama named Llama-2-13b';
 
 				const messages = [
-					// { role: 'system', content: 'Tell a story in 4 lines' },
+					{ role: 'system', content: 'Tell a story in 2 lines' },
 					{ role: 'user', content: userInput },
 				];
 
@@ -23,11 +23,11 @@ export default {
 					stream: true,
 				});
 
-				return new Response(stream, {
+				return new Response(stream as ReadableStream, {
 					headers: {
 						'Content-Type': 'text/event-stream',
 						'Access-Control-Allow-Origin': '*',
-					}
+					},
 				});
 			} else {
 				return new Response('This endpoint expects a GET request.', { status: 400 });
