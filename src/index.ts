@@ -14,8 +14,10 @@ export default {
 				const userInput = url.searchParams.get('prompt') || 'Once upon a time, there was a little llama named Llama-2-13b';
 
 				const messages = [
-					{ role: 'system', content: 'You are a helpful assistant that make notes of user input.' },
-					{ role: 'system', content: 'You will not confirm user input like "of course", "sure" and will not ask for more input.' },
+					{
+						role: 'system',
+						content: `You are an assistant that generates notes based on user input. Your role is to provide concise and informative notes about the given topic, starting with the phrase "Note:". You should maintain a neutral and impersonal tone throughout the response. Do not include any personal opinions or anecdotes, and avoid using conversational language or filler words. Your goal is to create a helpful and concise summary of the given topic.`,
+					},
 					{ role: 'user', content: userInput },
 				];
 
