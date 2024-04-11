@@ -14,11 +14,12 @@ export default {
 				const userInput = url.searchParams.get('prompt') || 'Once upon a time, there was a little llama named Llama-2-13b';
 
 				const messages = [
-					{ role: 'system', content: 'Tell a story in 2 lines' },
+					{ role: 'system', content: 'You are a helpful assistant that make notes of user input.' },
+					{ role: 'system', content: 'You will not confirm user input like "of course", "sure" and will not ask for more input.' },
 					{ role: 'user', content: userInput },
 				];
 
-				const stream = await ai.run('@hf/thebloke/llama-2-13b-chat-awq', {
+				const stream = await ai.run('@cf/meta/llama-2-7b-chat-fp16', {
 					messages,
 					stream: true,
 				});
