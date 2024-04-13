@@ -38,6 +38,27 @@ export default {
 			}
 		}
 
+		else if (url.pathname === '/generate-image') {
+			if (request.method === 'POST' && request.headers.get('Content-Type') === 'application/json') {
+				const { prompt }: any = await request.json();
+
+				const inputs = {
+					prompt: prompt || 'cat writing a note',
+				};
+
+				const response = await ai.run('@cf/bytedance/stable-diffusion-xl-lightning', inputs);
+
+				return new Response(response, {
+					headers: {
+						'content-type': 'image/png',
+						'Access-Control-Allow-Origin': '*',
+					},
+				});
+			} else {
+				return new Response('This endpoint expects a POST request with JSON payload.', { status: 400 });
+			}
+		}
+
 		return new Response('Endpoint not found.', { status: 404 });
 	},
 };
