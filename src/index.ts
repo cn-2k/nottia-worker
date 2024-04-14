@@ -9,9 +9,9 @@ export default {
 		const ai = new Ai(env.AI);
 		const url = new URL(request.url);
 
-		if (url.pathname === '/story') {
+		if (url.pathname === '/note') {
 			if (request.method === 'GET') {
-				const userInput = url.searchParams.get('prompt') || 'Once upon a time, there was a little llama named Llama-2-13b';
+				const userInput = url.searchParams.get('prompt') || 'Generate a short note about llamas!';
 
 				const messages = [
 					{
@@ -38,7 +38,7 @@ export default {
 			}
 		}
 
-		else if (url.pathname === '/generate-image') {
+		if (url.pathname === '/generate-image') {
 			if (request.method === 'POST' && request.headers.get('Content-Type') === 'application/json') {
 				const { prompt }: any = await request.json();
 
@@ -46,7 +46,7 @@ export default {
 					prompt: prompt || 'cat writing a note',
 				};
 
-				const response = await ai.run('@cf/bytedance/stable-diffusion-xl-lightning', inputs);
+				const response = await ai.run('@cf/stabilityai/stable-diffusion-xl-base-1.0', inputs);
 
 				return new Response(response, {
 					headers: {
@@ -54,8 +54,15 @@ export default {
 						'Access-Control-Allow-Origin': '*',
 					},
 				});
-			} else {
-				return new Response('This endpoint expects a POST request with JSON payload.', { status: 400 });
+			} else if (request.method === 'OPTIONS') {
+				// Handle preflight request
+				return new Response(null, {
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+						'Access-Control-Allow-Methods': 'POST',
+						'Access-Control-Allow-Headers': 'Content-Type',
+					},
+				});
 			}
 		}
 
